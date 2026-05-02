@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EventEase – Months of stress into minutes of clicks</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --p50:#fff7ed; --p100:#ffedd5; --p200:#fed7aa; --p300:#fdba74;
+    --p400:#fb923c; --p500:#f97316; --p600:#ea580c; --p700:#c2410c;
+    --bg:#FFF9F5; --white:#ffffff; --slate900:#0f172a; --slate700:#334155;
+    --slate600:#475569; --slate500:#64748b; --slate400:#94a3b8;
+    --slate200:#e2e8f0; --slate100:#f1f5f9; --slate50:#f8fafc;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--slate900); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  h1,h2,h3,h4,h5,h6 { font-weight:900; letter-spacing:-0.03em; }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:2px solid var(--p100); box-shadow:0 1px 8px rgba(0,0,0,0.04); }
+  .nav-inner { max-width:1280px; margin:0 auto; padding:0 1.5rem; display:flex; justify-content:space-between; align-items:center; height:72px; }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-icon { width:40px; height:40px; background:var(--p600); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:1.25rem; }
+  .logo-text { font-weight:900; font-size:1.375rem; color:var(--p600); letter-spacing:-0.04em; }
+  .nav-links { display:flex; align-items:center; gap:2rem; }
+  .nav-links a { text-decoration:none; font-size:.875rem; font-weight:600; color:var(--slate600); transition:color .2s; }
+  .nav-links a:hover { color:var(--p600); }
+  .btn-partner { background:var(--p500); color:#fff; padding:.625rem 1.5rem; border-radius:999px; font-size:.875rem; font-weight:700; border:none; cursor:pointer; box-shadow:0 4px 14px rgba(249,115,22,.35); transition:transform .2s; }
+  .btn-partner:hover { transform:scale(1.05); }
+  .hero { padding:10rem 1.5rem 5rem; position:relative; overflow:hidden; }
+  .hero-blob { position:absolute; top:0; left:50%; transform:translateX(-50%); width:900px; height:500px; background:radial-gradient(ellipse, rgba(253,186,116,.4) 0%, rgba(254,215,170,.3) 40%, transparent 70%); pointer-events:none; }
+  .hero-inner { max-width:1280px; margin:0 auto; position:relative; z-index:1; }
+  .hero-center { text-align:center; max-width:860px; margin:0 auto; }
+  .badge { display:inline-flex; align-items:center; gap:8px; padding:.25rem 1rem; border-radius:999px; background:var(--p200); color:var(--p700); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; margin-bottom:2rem; }
+  .badge-dot { width:8px; height:8px; border-radius:50%; background:var(--p500); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(.8)} }
+  h1.hero-title { font-size:clamp(2.5rem,6vw,5rem); line-height:1.08; margin-bottom:1.5rem; color:var(--slate900); }
+  h1.hero-title span { color:var(--p500); }
+  .hero-sub { font-size:1.125rem; color:var(--slate600); margin-bottom:2.5rem; max-width:580px; margin-left:auto; margin-right:auto; line-height:1.7; font-weight:500; }
+  .hero-btns { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:4rem; }
+  .btn-primary { background:var(--p500); color:#fff; padding:1rem 2rem; border-radius:999px; font-size:1rem; font-weight:800; border:none; cursor:pointer; box-shadow:0 8px 24px rgba(249,115,22,.35); transition:transform .2s; display:inline-flex; align-items:center; gap:.5rem; }
+  .btn-primary:hover { transform:scale(1.04); }
+  .btn-secondary { background:var(--p100); color:var(--p600); padding:1rem 2rem; border-radius:999px; font-size:1rem; font-weight:800; border:none; cursor:pointer; transition:transform .2s; display:inline-flex; align-items:center; gap:.5rem; }
+  .btn-secondary:hover { transform:scale(1.04); }
+  .search-card { background:#fff; border-radius:28px; box-shadow:0 4px 32px rgba(0,0,0,.07); border:2px solid var(--p50); overflow:hidden; max-width:880px; margin:0 auto; }
+  .search-tabs { display:flex; border-bottom:1px solid var(--slate100); }
+  .search-tab { flex:1; padding:1rem; font-size:.875rem; font-weight:700; background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; color:var(--slate500); transition:all .2s; margin-bottom:-1px; font-family:inherit; }
+  .search-tab.active { border-bottom-color:var(--p600); color:var(--p600); background:rgba(249,115,22,.04); }
+  .search-tab:hover:not(.active) { color:var(--slate900); background:var(--slate50); }
+  .search-body { padding:1.5rem; display:flex; flex-wrap:wrap; gap:1rem; }
+  .search-input-wrap { flex:1; min-width:160px; position:relative; }
+  .search-input-wrap input { width:100%; padding:.75rem .75rem .75rem 2.75rem; background:var(--slate50); border:1.5px solid var(--slate200); border-radius:14px; font-family:inherit; font-size:.9rem; font-weight:600; color:var(--slate900); outline:none; transition:all .2s; }
+  .search-input-wrap input::placeholder { color:var(--slate400); font-weight:500; }
+  .search-input-wrap input:focus { border-color:var(--p500); box-shadow:0 0 0 3px rgba(249,115,22,.12); }
+  .input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--slate400); }
+  .btn-search { background:var(--p500); color:#fff; padding:.75rem 1.75rem; border-radius:14px; font-weight:700; font-family:inherit; border:none; cursor:pointer; box-shadow:0 4px 12px rgba(249,115,22,.3); transition:transform .2s; white-space:nowrap; }
+  .btn-search:hover { transform:scale(1.04); }
+  .trust { padding:2.5rem 1.5rem; border-top:1.5px solid var(--p100); border-bottom:1.5px solid var(--p100); background:var(--bg); }
+  .trust-inner { max-width:1280px; margin:0 auto; }
+  .trust p { text-align:center; font-size:.75rem; font-weight:700; color:var(--slate500); text-transform:uppercase; letter-spacing:.12em; margin-bottom:1.25rem; }
+  .trust-logos { display:flex; flex-wrap:wrap; justify-content:center; gap:2rem 3.5rem; }
+  .trust-logos span { font-weight:900; font-size:1.1rem; color:var(--slate400); opacity:.6; letter-spacing:-.02em; }
+  .features { padding:6rem 1.5rem; background:#fff; }
+  .section-inner { max-width:1280px; margin:0 auto; }
+  .section-header { text-align:center; max-width:680px; margin:0 auto 4rem; }
+  .section-header h2 { font-size:clamp(2rem,4vw,3.25rem); margin-bottom:1rem; }
+  .section-header p { font-size:1.0625rem; color:var(--slate600); line-height:1.7; }
+  .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; }
+  .feature-card { background:#fff; padding:1.75rem; border-radius:28px; border:2px solid var(--p50); box-shadow:0 2px 16px rgba(0,0,0,.04); transition:transform .3s; }
+  .feature-card:hover { transform:translateY(-6px); }
+  .feat-icon { width:48px; height:48px; border-radius:16px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
+  .feature-card h3 { font-size:1.125rem; margin-bottom:.625rem; }
+  .feature-card p { font-size:.875rem; color:var(--slate500); line-height:1.65; font-weight:500; }
+  .marketplace { padding:6rem 1.5rem; background:#fff; }
+  .market-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; max-width:1280px; margin:0 auto; }
+  @media(max-width:900px){.market-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
+  @media(max-width:480px){.hero-btns{flex-direction:column;align-items:center;}}
+  .market-badge { display:inline-flex; align-items:center; gap:6px; padding:.25rem .875rem; border-radius:999px; background:var(--p200); color:var(--p700); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:1.5rem; }
+  .market-title { font-size:clamp(1.75rem,3.5vw,3rem); line-height:1.15; margin-bottom:1.5rem; }
+  .market-title span { color:var(--p500); }
+  .market-sub { font-size:1.0625rem; color:var(--slate600); line-height:1.7; margin-bottom:2rem; font-weight:500; }
+  .market-list { list-style:none; display:flex; flex-direction:column; gap:.875rem; }
+  .market-list li { display:flex; align-items:flex-start; gap:.75rem; color:var(--slate700); font-weight:600; font-size:.9375rem; }
+  .check-icon { margin-top:2px; width:24px; height:24px; background:var(--p100); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--p500); }
+  .dashboard-card { background:var(--p500); padding:2.25rem; border-radius:40px; box-shadow:0 24px 64px rgba(249,115,22,.35); color:#fff; transform:rotate(1deg); }
+  .dash-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; padding-bottom:1.5rem; border-bottom:1.5px solid rgba(255,255,255,.2); }
+  .dash-header h3 { font-size:1.125rem; font-weight:800; }
+  .dash-header p { font-size:.8125rem; color:rgba(255,255,255,.75); margin-top:2px; }
+  .dash-badge { background:rgba(255,255,255,.2); color:#fff; padding:.25rem .75rem; border-radius:999px; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
+  .booking-cards { display:flex; flex-direction:column; gap:.75rem; }
+  .booking-item { padding:1rem; border-radius:18px; display:flex; align-items:center; gap:.875rem; }
+  .booking-item.normal { background:rgba(255,255,255,.2); }
+  .booking-item.active { background:rgba(255,255,255,.32); transform:scale(1.03); box-shadow:0 8px 24px rgba(0,0,0,.15); }
+  .booking-icon { width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .booking-item.active .booking-icon { background:#fff; color:var(--p500); }
+  .booking-item.normal .booking-icon { background:rgba(255,255,255,.2); color:#fff; }
+  .booking-info { flex:1; min-width:0; }
+  .booking-name { font-weight:800; font-size:.9375rem; display:flex; justify-content:space-between; color:#fff; }
+  .booking-meta { display:flex; justify-content:space-between; margin-top:.25rem; }
+  .booking-type { font-size:.65rem; font-weight:800; text-transform:uppercase; background:rgba(255,255,255,.2); color:#fff; padding:.15rem .5rem; border-radius:4px; }
+  .booking-status { font-size:.7rem; font-weight:700; color:rgba(255,255,255,.8); }
+  .about { padding:6rem 1.5rem; background:var(--bg); position:relative; overflow:hidden; }
+  .about-inner { max-width:1280px; margin:0 auto; }
+  .stats-card { background:#fff; border-radius:40px; padding:2.5rem 3rem; box-shadow:0 2px 20px rgba(0,0,0,.05); border:2px solid var(--p50); margin:3rem 0; display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  @media(max-width:600px){.stats-card{grid-template-columns:1fr;}}
+  .stat { text-align:center; padding:1rem; }
+  .stat:not(:last-child) { border-right:1.5px solid var(--slate100); }
+  @media(max-width:600px){.stat:not(:last-child){border-right:none;border-bottom:1.5px solid var(--slate100);}}
+  .stat-num { font-size:2.5rem; font-weight:900; color:var(--slate900); margin-bottom:.25rem; }
+  .stat-label { font-size:.75rem; font-weight:700; color:var(--slate500); text-transform:uppercase; letter-spacing:.1em; }
+  .quote-text { font-size:1.125rem; font-style:italic; color:var(--slate700); max-width:680px; margin:0 auto; text-align:center; line-height:1.75; }
+  .cta { padding:6rem 1.5rem; background:#fff; position:relative; overflow:hidden; }
+  .cta::before { content:''; position:absolute; inset:0; background-image:linear-gradient(to right,rgba(234,88,12,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(234,88,12,.08) 1px,transparent 1px); background-size:4rem 4rem; }
+  .cta-inner { max-width:800px; margin:0 auto; text-align:center; position:relative; z-index:1; }
+  .cta-inner h2 { font-size:clamp(2rem,4vw,3.25rem); margin-bottom:1rem; }
+  .cta-inner p { color:var(--slate600); font-size:1.0625rem; font-weight:600; margin-bottom:2.5rem; }
+  .cta-btns { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; }
+  footer { background:#fff; border-top:2px solid var(--p100); padding:4rem 1.5rem 2rem; }
+  .footer-inner { max-width:1280px; margin:0 auto; }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:2rem; margin-bottom:3rem; }
+  @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.footer-grid{grid-template-columns:1fr;}}
+  .footer-brand p { color:var(--slate500); font-size:.9rem; line-height:1.6; max-width:280px; margin-top:.75rem; }
+  .footer-col h4 { font-size:.875rem; font-weight:700; color:var(--slate900); margin-bottom:1rem; }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:.625rem; }
+  .footer-col ul li a { text-decoration:none; color:var(--slate500); font-size:.875rem; transition:color .2s; }
+  .footer-col ul li a:hover { color:var(--p600); }
+  .footer-bottom { padding-top:2rem; border-top:1px solid var(--slate100); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.75rem; }
+  .footer-bottom p { color:var(--slate500); font-size:.8125rem; }
+  .footer-location { display:flex; align-items:center; gap:.5rem; color:var(--slate600); font-size:.8125rem; font-weight:600; }
+  .fade-up { opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+  .fade-left { opacity:0; transform:translateX(-28px); transition:opacity .6s ease, transform .6s ease; }
+  .fade-left.visible { opacity:1; transform:translateX(0); }
+  .fade-right { opacity:0; transform:translateX(28px); transition:opacity .6s ease, transform .6s ease; }
+  .fade-right.visible { opacity:1; transform:translateX(0); }
+  .delay-1{transition-delay:.1s} .delay-2{transition-delay:.2s} .delay-3{transition-delay:.3s} .delay-4{transition-delay:.4s}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">E</div>
+      <span class="logo-text">EventEase</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it Works</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+      <button class="btn-partner">Partner with us</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-inner">
+    <div class="hero-center">
+      <div class="badge fade-up"><span class="badge-dot"></span>Now live in Dhaka. Coming soon to Chittagong &amp; Sylhet.</div>
+      <h1 class="hero-title fade-up delay-1">Months of stress into <span>minutes of clicks</span>.</h1>
+      <p class="hero-sub fade-up delay-2">The all-in-one digital marketplace for Bangladesh. Discover venues, caterers, and decorators—all verified and bookable instantly.</p>
+      <div class="hero-btns fade-up delay-3">
+        <button class="btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Find your perfect venue
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="trust-inner">
+    <p>Trusted by top venues in Dhaka</p>
+    <div class="trust-logos">
+      <span>Radisson Blu</span><span>Le Méridien</span><span>Senamalancha</span><span>Golf Garden</span><span>Pan Pacific</span>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <h2>Built for peace of mind</h2>
+      <p>We eliminate the uncertainty of endless phone calls and scattered bookings by bringing everything onto one secure platform.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card fade-up delay-1">
+        <div class="feat-icon" style="background:#dbeafe;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3>Escrow Payments</h3>
+        <p>We hold your money securely and only release it to the vendor after your event is successfully completed.</p>
+      </div>
+      <div class="feature-card fade-up delay-2">
+        <div class="feat-icon" style="background:#dcfce7;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <h3>Virtual Tours</h3>
+        <p>Skip the Dhaka traffic. Scout community centers and banquet halls from the comfort of your home.</p>
+      </div>
+      <div class="feature-card fade-up delay-3">
+        <div class="feat-icon" style="background:#fef9c3;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3>Verified Trust</h3>
+        <p>No hidden costs or fake ads. Browse real photos and authentic reviews from past customers.</p>
+      </div>
+      <div class="feature-card fade-up delay-4">
+        <div class="feat-icon" style="background:var(--p100);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+        </div>
+        <h3>Smart Bundling</h3>
+        <p>Save up to 20% when you book service packages—venue, catering, and decor—together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="marketplace" id="how-it-works">
+  <div class="market-grid">
+    <div class="fade-left">
+      <div class="market-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        The All-In-One Marketplace
+      </div>
+      <h2 class="market-title">Like food delivery, but for <span>milestones</span>.</h2>
+      <p class="market-sub">Whether it's a wedding, a milestone birthday, or a corporate annual dinner, we bring the best of Dhaka's event industry to your fingertips. Stop managing separate spreadsheets and WhatsApp groups.</p>
+      <ul class="market-list">
+        <li><div class="check-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Compare real-time availability and transparent pricing</li>
+        <li><div class="check-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Message vendors directly through the app</li>
+        <li><div class="check-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Sign digital contracts and manage payments in one place</li>
+        <li><div class="check-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Get dedicated support leading up to your event</li>
+      </ul>
+    </div>
+    <div class="fade-right">
+      <div class="dashboard-card">
+        <div class="dash-header">
+          <div><h3>Your Event Dashboard</h3><p>Sarah &amp; Ahmed's Wedding</p></div>
+          <div class="dash-badge">On Track</div>
+        </div>
+        <div class="booking-cards">
+          <div class="booking-item normal">
+            <div class="booking-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></div>
+            <div class="booking-info">
+              <div class="booking-name"><span>Gulshan Banquet Hall</span><span>৳ 1,50,000</span></div>
+              <div class="booking-meta"><span class="booking-type">Venue</span><span class="booking-status">Confirmed</span></div>
+            </div>
+          </div>
+          <div class="booking-item active">
+            <div class="booking-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div>
+            <div class="booking-info">
+              <div class="booking-name"><span>Nawabi Catering HQ</span><span>৳ 2,20,000</span></div>
+              <div class="booking-meta"><span class="booking-type">Catering</span><span class="booking-status">Pending Menu Selection</span></div>
+            </div>
+          </div>
+          <div class="booking-item normal">
+            <div class="booking-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
+            <div class="booking-info">
+              <div class="booking-name"><span>Floral Elegance</span><span>৳ 80,000</span></div>
+              <div class="booking-meta"><span class="booking-type">Decor</span><span class="booking-status">Escrow Funded</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="section-header fade-up">
+      <h2>About Team Zenith</h2>
+      <p>Born from the hustle and bustle of Dhaka, we recognized a significant gap in the event industry: the hundreds of hours lost to endless phone calls, the uncertainty of unverified vendors, and the stress of navigating a fragmented market.</p>
+    </div>
+    <div class="stats-card fade-up delay-1">
+      <div class="stat"><div class="stat-num">0</div><div class="stat-label">Surprise Costs</div></div>
+      <div class="stat"><div class="stat-num">20%</div><div class="stat-label">Average Savings</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Payment Protection</div></div>
+    </div>
+    <p class="quote-text fade-up delay-2">"We aren't just selling software; we are selling peace of mind. Every celebration deserves to be enjoyed, not managed."</p>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta-inner fade-up">
+    <h2>Ready to plan your perfect event?</h2>
+    <p>Join thousands of busy couples, parents, and HR professionals utilizing EventEase in Dhaka.</p>
+    <div class="cta-btns">
+      <button class="btn-primary">Start Planning Now</button>
+      <button class="btn-secondary">List Your Venue</button>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding:5rem 1.5rem; background:var(--bg);">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div class="section-header fade-up" style="margin-bottom:3rem;">
+      <h2>Get in Touch</h2>
+      <p>Have questions or want to partner with us? Reach out — we're always happy to help.</p>
+    </div>
+    <div class="fade-up delay-1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;max-width:860px;margin:0 auto;">
+      <a href="tel:01738682042" style="text-decoration:none;display:flex;align-items:center;gap:1rem;background:#fff;padding:1.5rem;border-radius:20px;border:2px solid var(--p50);box-shadow:0 2px 16px rgba(0,0,0,.04);transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+        <div style="width:48px;height:48px;background:var(--p100);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--p600);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.9.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--slate500);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Phone</div>
+          <div style="font-size:1rem;font-weight:800;color:var(--slate900);">01738682042</div>
+        </div>
+      </a>
+      <a href="mailto:eventease.zenith@gmail.com" style="text-decoration:none;display:flex;align-items:center;gap:1rem;background:#fff;padding:1.5rem;border-radius:20px;border:2px solid var(--p50);box-shadow:0 2px 16px rgba(0,0,0,.04);transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+        <div style="width:48px;height:48px;background:var(--p100);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--p600);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--slate500);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Email</div>
+          <div style="font-size:.9rem;font-weight:800;color:var(--slate900);">zenith@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://maps.app.goo.gl/owziDeYkhyiMWsXB7" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center;gap:1rem;background:#fff;padding:1.5rem;border-radius:20px;border:2px solid var(--p50);box-shadow:0 2px 16px rgba(0,0,0,.04);transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+        <div style="width:48px;height:48px;background:var(--p100);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--p600);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--slate500);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Office</div>
+          <div style="font-size:1rem;font-weight:800;color:var(--slate900);">View on Google Maps ↗</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon" style="width:32px;height:32px;font-size:1rem;">E</div>
+          <span class="logo-text">EventEase</span>
+        </a>
+        <p>Redefining celebrations in Bangladesh. By Team Zenith. The all-in-one marketplace for venues, catering, and decor.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul><li><a href="#">Venues</a></li><li><a href="#">Catering</a></li><li><a href="#">Photography</a></li><li><a href="#">Smart Packages</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Partner Program</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul>
+          <li><a href="tel:01738682042" style="display:flex;align-items:center;gap:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.9.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>01738682042</a></li>
+          <li><a href="mailto:eventease.zenith@gmail.com" style="display:flex;align-items:center;gap:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>eventease.zenith@gmail.com</a></li>
+          <li><a href="https://maps.app.goo.gl/owziDeYkhyiMWsXB7" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>View Office on Map</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 EventEase by Team Zenith. All rights reserved.</p>
+      <div class="footer-location">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Dhaka &nbsp;|&nbsp; <span style="color:var(--slate400)">Coming soon to Chittagong &amp; Sylhet</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.search-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+  observer.observe(el);
+  if (el.closest('.hero')) el.classList.add('visible');
+});
+</script>
+</body>
+</html>
